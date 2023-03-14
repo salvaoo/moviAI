@@ -1,5 +1,8 @@
 # MoviAI
 
+![Dark mode moviAI](/dark_mode_moviAI.png)
+![Light mode moviAI](/light_mode_moviAI.png)
+
 This is a movie recommendation website created in [Next.js 13](https://beta.nextjs.org/docs/getting-started) and [TailwindCSS](https://tailwindcss.com/). This project is created with `create-t3-app` and I used the AMAZING [shadcn/ui](https://ui.shadcn.com/) components library.
 
 ## What it does?
@@ -16,7 +19,7 @@ Or you can clone the repo and run it locally.
 First, you need to clone the repo:
 
 ```bash
-git clone
+git clone https://github.com/salvaoo/moviAI.git
 ```
 
 Go to the project directory:
