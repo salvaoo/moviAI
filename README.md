@@ -1,15 +1,8 @@
 # MoviAI
 
-<div style="display: flex; flex-direction: row; gap: 1rem; justify-content: start;">
-   <img src="public/dark_mode_moviAI.png" width=450>
-   <img src="public/light_mode_moviAI.png" width=450>
-</div>
-<br>
-
-<!-- 
-![Dark mode moviAI](public/dark_mode_moviAI.png)
+<!-- ![Dark mode moviAI](public/dark_mode_moviAI.png) -->
 ![Light mode moviAI](public/light_mode_moviAI.png) 
--->
+
 
 This is a movie recommendation website created in [Next.js 13](https://beta.nextjs.org/docs/getting-started) and [TailwindCSS](https://tailwindcss.com/). This project is created with `create-t3-app` and I used the AMAZING [shadcn/ui](https://ui.shadcn.com/) components library.
 
