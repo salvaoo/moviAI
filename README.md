@@ -1,8 +1,8 @@
 # MoviAI
 
-<div style="display: flex; gap: 1rem; justify-content: center; align-items: center;">
-   <img src="public/dark_mode_moviAI.png" width=50% height=50%>
-   <img src="public/light_mode_moviAI.png" width=50% height=50%>
+<div style="display: flex; flex-direction: row; gap: 1rem; justify-content: start;">
+   <img src="public/dark_mode_moviAI.png" width=450>
+   <img src="public/light_mode_moviAI.png" width=450>
 </div>
 <br>
 
