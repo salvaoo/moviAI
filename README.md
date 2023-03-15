@@ -8,7 +8,7 @@ This is a movie recommendation website created in [Next.js 13](https://beta.next
 
 ## What it does?
 
-I give to the user the ability to search by genres and get the best 15 movies recommendations based on these genres. The recommendation is get from the new **gpt-3.5-turbo** from **openAI**. The user can also see the movie details, the people votes, etc..
+I give to the user the ability to search by genres and get the best 15 movies recommendations based on these genres. The recommendation is get from the new [gpt-3.5-turbo](https://platform.openai.com/docs/guides/chat) from **openAI**. The user can also see the movie details, the people votes, etc. I use the [TMDB API](https://developers.themoviedb.org/3/getting-started/introduction) to get the movie information.
 
 ## Try it out
 
