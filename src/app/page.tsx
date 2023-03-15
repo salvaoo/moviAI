@@ -3,26 +3,20 @@ import Genre from "~/components/genre";
 
 import type { Genre as GenreType } from "~/types/genre";
 
-const getGenres = async (): Promise<{ genres: Array<GenreType> }> => {
+const getGenres = async () => {
+   const URL = process.env.TMDB_API_URL || 'https://api.themoviedb.org/3'
+   const TMDB_API_KEY = process.env.TMDB_API_KEY || '114835b3b2fb9886e0aefc6f94f2b0f3'
 
-  const URL = process.env.TMDB_API_URL || 'https://api.themoviedb.org/3';
-  const TMDB_API_KEY = process.env.TMDB_API_KEY || '114835b3b2fb9886e0aefc6f94f2b0f3';
+   const response = await fetch(`${URL}/genre/movie/list?api_key=${TMDB_API_KEY}`, {
+      method: "GET",
+   })
+   const genres = await response.json() as { genres: Array<GenreType> }
 
-  const response = await fetch(`${URL}/genre/movie/list?api_key=${TMDB_API_KEY}`)
-  const data = await response.json() as { genres: Genre[] };
-
-   // const URL = process.env.SERVER_HOST || "http://localhost:3000";
-   // const { data }: { data: { genres: Array<GenreType> } } = await fetch(`${URL}/genres`, {
-   //    method: "GET",
-   // }).then((response) => response.json()) as { data: { genres: Array<GenreType> } }
-
-   return data;
+   return genres
 }
 
 export default async function Page() {
    const genres = await getGenres();
-
-   console.log(genres);
    
    // const ball = useRef<HTMLDivElement>(null);
    // useEffect(() => {
