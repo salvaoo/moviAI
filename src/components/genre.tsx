@@ -32,8 +32,7 @@ function Genre({ genres }: { genres: Array<Genre> }) {
       // Remove the last comma
       movies = movies.slice(0, -1);
 
-      const URL = process.env.SERVER_HOST || "http://localhost:3000";
-      const response = await fetch(`${URL}/search`, {
+      const response = await fetch(`/search`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -48,8 +47,7 @@ function Genre({ genres }: { genres: Array<Genre> }) {
    }
 
    const getMovieInfo = async (id: number) => {
-      const URL = process.env.SERVER_HOST || "http://localhost:3000";
-      const response = await fetch(`${URL}/movies/${id}`, {
+      const response = await fetch(`/movies/${id}`, {
          method: "GET",
       });
       const data = await response.json();
