@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import type { GPTResponse } from '~/types/gptResponse'
+
 // -- MODEL: gpt-3.5-turbo -- //
 interface OpenAIStreamPayload {
    model: string;
@@ -10,30 +12,6 @@ interface OpenAIStreamPayload {
    presence_penalty: number;
    n: number;
 }
-
-export type GPTResponse = {
-   id:      string;
-   object:  string;
-   created: number;
-   model:   string;
-   usage?:   Usage;
-   choices?: Choice[];
-}
-type Choice = {
-   message?:       Message;
-   finish_reason?: null;
-   index?:         number;
-}
-type Message = {
-   role?:    string;
-   content?: string;
-}
-type Usage = {
-   prompt_tokens?:     number;
-   completion_tokens?: number;
-   total_tokens?:      number;
-}
-
 
 export async function POST(request: Request) {
    const { movies } = await request.json()  as { movies: string }
