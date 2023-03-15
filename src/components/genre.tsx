@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image"
 
 import { Toggle } from "~/components/ui/Toggle"
@@ -16,7 +16,7 @@ import { Movie } from "~/types/movie";
 function Genre({ genres }: { genres: Array<Genre> }) {
    const [genresSelected, setGenresSelected] = useState<Array<Genre | undefined>>([]);
    const [loading, setLoading] = useState(0);
-   const [movies, setMovies] = useState<Array<{movie: Movie}>>([]);
+   const [movies, setMovies] = useState<Array<{ movie: Movie }>>([]);
 
    const IMAGE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGES_URL || 'https://image.tmdb.org/t/p/w500'
 
@@ -24,7 +24,9 @@ function Genre({ genres }: { genres: Array<Genre> }) {
       let movies = "";
       if (genresSelected !== undefined) {
          genresSelected.map(element => {
-            movies += element?.name + ","
+            if (typeof element?.name === "string") {
+               movies += `${element.name},`;
+            }
          });
       }
       // Remove the last comma
@@ -78,12 +80,8 @@ function Genre({ genres }: { genres: Array<Genre> }) {
       setLoading(1);
       const { response } = await searchGPT();
 
-      console.log(response);
-
       if (response && response.choices && response.choices.length > 0) {
          const data = JSON.parse(response.choices[0].message.content);
-
-         console.log("data: ", data);
 
          setLoading(2)
 
@@ -96,10 +94,6 @@ function Genre({ genres }: { genres: Array<Genre> }) {
          setLoading(0);
       }
    }
-
-   useEffect(() => {
-      console.log("movies data: ", movies);
-   }, [movies])
 
    const handleToggle = (name: string) => {
       const index = genres.findIndex(genre => genre.name === name);
