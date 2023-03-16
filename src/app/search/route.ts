@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 
 import type { GPTResponse } from '~/types/gptResponse'
 
+export const config = {
+   runtime: "edge",
+}
+
 // -- MODEL: gpt-3.5-turbo -- //
 interface OpenAIStreamPayload {
    model: string;
@@ -14,7 +18,8 @@ interface OpenAIStreamPayload {
 }
 
 export async function POST(request: Request) {
-   const { movies } = await request.json()  as { movies: string }
+   const { movies } = await request.json() as { movies: string }
+   const NUM_MOVIES = 3;
 
    const GPT_API_KEY = process.env.GPT_API_KEY
    if (!GPT_API_KEY) {
@@ -27,7 +32,7 @@ export async function POST(request: Request) {
       'Authorization': `Bearer ${GPT_API_KEY}`
    }
 
-   const message = `Give me a Array object of the best 15 movies about these genres, acts as a movie expert. (the objects need to be a JSON with title and TMDB id): "${movies}"`;
+   const message = `Give me a Array object of the best ${NUM_MOVIES} movies about these genres, acts as a movie expert. (the objects need to be a JSON with title and TMDB id): "${movies}"`;
 
 
    const payload: OpenAIStreamPayload = {
@@ -43,11 +48,15 @@ export async function POST(request: Request) {
       n: 1
    };
 
+   console.time('Tiempo de respuesta');
+
    const response = await fetch(URL_GPT, {
       method: 'POST',
       headers,
       body: JSON.stringify(payload)
    }).then(res => res.json()) as GPTResponse;
+
+   console.timeEnd('Tiempo de respuesta');
 
    return NextResponse.json({ response })
 }
