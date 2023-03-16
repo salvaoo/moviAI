@@ -8,12 +8,23 @@ This is a movie recommendation website created in [Next.js 13](https://beta.next
 
 ## What it does?
 
-I give to the user the ability to search by genres and get the best 15 movies recommendations based on these genres. The recommendation is get from the new [gpt-3.5-turbo](https://platform.openai.com/docs/guides/chat) from **openAI**. The user can also see the movie details, the people votes, etc. I use the [TMDB API](https://developers.themoviedb.org/3/getting-started/introduction) to get the movie information.
+I give to the user the ability to search by genres and get the best movies recommendations based on these genres. The recommendation is get from the new [gpt-3.5-turbo](https://platform.openai.com/docs/guides/chat) from **openAI**. The user can also see the movie details, the people votes, etc. I use the [TMDB API](https://developers.themoviedb.org/3/getting-started/introduction) to get the movie information.
 
 ## Try it out
 
-#### You can try it out here: [moviAI](https://movi-ai.vercel.app/)
-Or you can clone the repo and run it locally.
+**You can try it out here: [moviAI](https://movi-ai.vercel.app/)** or you can clone the repo and run it locally.
+
+### Why can I only see 3 recommended movies?
+
+You can only have 3 movie recommendations in [movi-ai.vercel.app](https://movi-ai.vercel.app) because vercel has a limited response time.
+> **The maximum execution time per plan in Vercel is:** 
+> - 10s (Hobby)
+> - 60s (Pro)
+> - 900s (Enterprise)
+>
+> _This information is taken from [this](https://vercel.com/docs/platform/limits#serverless-function-execution-timeout) page._
+
+Sorry but I have "Hobby" plan yet :pensive:
 
 ## How to run it locally
 
