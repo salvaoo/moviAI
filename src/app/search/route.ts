@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 
 import type { GPTResponse } from '~/types/gptResponse'
 
-export const config = {
-   runtime: "edge",
-}
+// export const config = {
+//    runtime: "edge",
+// }
 
 // -- MODEL: gpt-3.5-turbo -- //
 interface OpenAIStreamPayload {
