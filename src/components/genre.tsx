@@ -6,7 +6,6 @@ import Image from "next/image"
 import { Toggle } from "~/components/ui/Toggle"
 import { Button } from "~/components/ui/Button";
 import { AspectRatio } from "~/components/ui/Aspect-ratio"
-
 import { Icons } from "~/components/Icons"
 import MovieHover from "./Movie-hover";
 
