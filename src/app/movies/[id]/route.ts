@@ -6,6 +6,10 @@ interface GetMovieRequest {
    id: number;
 }
 
+export const config = {
+   runtime: "edge",
+}
+
 export async function GET(request: Request, {
    params,
 }: {

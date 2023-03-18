@@ -2,10 +2,6 @@ import { NextResponse } from "next/server";
 
 import type { GPTResponse } from '~/types/gptResponse'
 
-// export const config = {
-//    runtime: "edge",
-// }
-
 // -- MODEL: gpt-3.5-turbo -- //
 interface OpenAIStreamPayload {
    model: string;
@@ -32,15 +28,16 @@ export async function POST(request: Request) {
       'Authorization': `Bearer ${GPT_API_KEY}`
    }
 
-   const message = `Give me a Array object of the best ${NUM_MOVIES} movies about these genres, acts as a movie expert. (the objects need to be a JSON with title and TMDB id): "${movies}"`;
-
+   // const message = `Give me an array object of the best ${NUM_MOVIES} movies about these genres, acts as a movie expert. (the objects need to be a JSON with title and TMDB id): "${movies}"`;
+   const message = `Give me an array of objects with a top ${NUM_MOVIES} of the best films in these genres: "${movies}". The objects must be JSON with title and TMDB id. Acts as a film expert.`;
 
    const payload: OpenAIStreamPayload = {
+      // model: 'gpt-4-0314',
       model: 'gpt-3.5-turbo',
-      "messages": [{
-         "role": "user",
-         "content": message
-      }],
+      "messages": [
+         // { "role": "system", "content": "You are a film expert." },
+         { "role": "user", "content": message }
+      ],
       temperature: 0.3,
       top_p: 1,
       frequency_penalty: 0,
