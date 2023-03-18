@@ -46,7 +46,6 @@ export default async function Page() {
             </h1>
             <Genre genres={genres.genres} />
             <ThemeToggle />
-
          </div>
 
       </main>

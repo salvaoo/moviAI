@@ -54,14 +54,16 @@ function Genre({ genres }: { genres: Array<Genre> }) {
       return data;
    }
 
-   const getMoviesInfo = async (movies: Array<{ title: string, id: number }>) => {
+   const getMoviesInfo = async (movies: Array<{ title: string, id?: number, TMDB_id?: number }>) => {
       let moviesInfo = [];
       for (let i = 0; i < movies.length; i++) {
          const movie = movies[i];
-         if (movie?.id === undefined) {
+         const movie_ID = movie?.TMDB_id ? movie.TMDB_id : movie?.id;
+
+         if (movie_ID === undefined) {
             continue;
          }
-         const movieInfo = await getMovieInfo(movie.id);
+         const movieInfo = await getMovieInfo(movie_ID);
          moviesInfo.push(movieInfo);
       }
 
@@ -79,8 +81,19 @@ function Genre({ genres }: { genres: Array<Genre> }) {
       setLoading(1);
       const { response } = await searchGPT();
 
+      // console.log('response: ', response);
+
       if (response && response.choices && response.choices.length > 0) {
          const data = JSON.parse(response.choices[0].message.content);
+
+         // const dataString = response.choices[0].message.content;
+         // console.log('dataString: ', dataString);
+         // const regex = /`{3}json[\s\S]*?`{3}/g;
+         // const result = dataString.match(regex)[0];
+         // console.log('result: ', result);
+         // let data = result.replace("```json","").replace("```javascript","").replace("```","");
+         // console.log('data: ', data);
+         // data = JSON.parse(data);
 
          setLoading(2)
 
