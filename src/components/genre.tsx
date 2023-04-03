@@ -31,7 +31,7 @@ function Genre({ genres }: { genres: Array<Genre> }) {
       // Remove the last comma
       movies = movies.slice(0, -1);
 
-      const response = await fetch(`/search`, {
+      return await fetch(`/search`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -39,10 +39,7 @@ function Genre({ genres }: { genres: Array<Genre> }) {
          body: JSON.stringify({
             "movies": movies
          })
-      });
-      const data = await response.json();
-
-      return data;
+      }).then(res => res.json());
    }
 
    const getMovieInfo = async (id: number) => {
@@ -83,28 +80,21 @@ function Genre({ genres }: { genres: Array<Genre> }) {
 
       // console.log('response: ', response);
 
-      if (response && response.choices && response.choices.length > 0) {
-         const data = JSON.parse(response.choices[0].message.content);
-
-         // const dataString = response.choices[0].message.content;
-         // console.log('dataString: ', dataString);
-         // const regex = /`{3}json[\s\S]*?`{3}/g;
-         // const result = dataString.match(regex)[0];
-         // console.log('result: ', result);
-         // let data = result.replace("```json","").replace("```javascript","").replace("```","");
-         // console.log('data: ', data);
-         // data = JSON.parse(data);
-
-         setLoading(2)
-
-         const movies = await getMoviesInfo(data);
-         setMovies(movies);
+      if (response.error) {
+         // console.log('response.error: ', response.error);
          setLoading(0);
-
-      } else {
-         console.log("Fail! No results found");
-         setLoading(0);
+         return;
       }
+
+      const data = JSON.parse(response.choices[0].message.content);
+
+      // console.log('data: ', data);
+
+      setLoading(2)
+
+      const movies = await getMoviesInfo(data);
+      setMovies(movies);
+      setLoading(0);
    }
 
    const handleToggle = (name: string) => {

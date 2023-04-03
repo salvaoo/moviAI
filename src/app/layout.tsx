@@ -1,4 +1,4 @@
-import { Inter as FontSans } from "@next/font/google"
+import { Inter } from "@next/font/google"
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -7,11 +7,11 @@ import { ThemeProvider } from "~/components/Theme-provider"
 import "~/styles/globals.css";
 import { cn } from "~/lib/utils";
 
-const fontSans = FontSans({
-   subsets: ["latin"],
-   variable: "--font-sans",
-   display: "swap",
-})
+const inter = Inter({
+   subsets: ['latin'],
+   variable: "--font-inter",
+   display: 'swap',
+ })
 
 export const metadata: Metadata = {
    title: 'MoviAI',
@@ -63,7 +63,7 @@ export default function RootLayout({
          <body
             className={cn(
                "min-h-screen font-sans bg-gradient-to-b from-slate-50 to-[hsl(280,100%,95%)] text-slate-900 antialiased dark:text-slate-50 dark:bg-gradient-to-b dark:from-[#2e026d] dark:to-[#15162c]",
-               fontSans.variable
+               inter.variable
             )}
          >
             <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

@@ -1,59 +1,81 @@
-import { NextResponse } from "next/server";
-
-import type { GPTResponse } from '~/types/gptResponse'
-
-// -- MODEL: gpt-3.5-turbo -- //
-interface OpenAIStreamPayload {
-   model: string;
-   messages: Array<{ role: string; content: string }>;
-   temperature: number;
-   top_p: number;
-   frequency_penalty: number;
-   presence_penalty: number;
-   n: number;
-}
+import { NextResponse } from "next/server"
+import { ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from 'openai'
 
 export async function POST(request: Request) {
    const { movies } = await request.json() as { movies: string }
-   const NUM_MOVIES = 3;
-
+   const NUM_MOVIES = 6
    const GPT_API_KEY = process.env.GPT_API_KEY
    if (!GPT_API_KEY) {
-      throw new Error("Missing GPT API key");
+      throw new Error("Missing GPT API key")
    }
-   const URL_GPT = 'https://api.openai.com/v1/chat/completions'
+   
+   const configuration = new Configuration({ apiKey: GPT_API_KEY })
+   const openai = new OpenAIApi(configuration)
 
-   const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${GPT_API_KEY}`
-   }
-
-   // const message = `Give me an array object of the best ${NUM_MOVIES} movies about these genres, acts as a movie expert. (the objects need to be a JSON with title and TMDB id): "${movies}"`;
-   const message = `Give me an array of objects with a top ${NUM_MOVIES} of the best films in these genres: "${movies}". The objects must be JSON with title and TMDB id. Acts as a film expert.`;
-
-   const payload: OpenAIStreamPayload = {
-      // model: 'gpt-4-0314',
-      model: 'gpt-3.5-turbo',
-      "messages": [
-         // { "role": "system", "content": "You are a film expert." },
-         { "role": "user", "content": message }
-      ],
-      temperature: 0.3,
-      top_p: 1,
-      frequency_penalty: 0,
-      presence_penalty: 0,
-      n: 1
-   };
+   const messages = [
+      {
+         role: ChatCompletionRequestMessageRoleEnum.System,
+         content: "You are a film expert. You receive a text from the user with a some genres sorrounded by `{{` and `}}` and the number of movies he want to get sorrounded by `[[` and `]]`. Don't answer, just return the array of objects."
+      },
+      {
+         role: ChatCompletionRequestMessageRoleEnum.User,
+         content: `Give me an array of objects with a top [[5]] of the best films in these genres: {{Comedy,Crime}}. The objects must be JSON with title and TMDB id.`
+      },
+      {
+         role: ChatCompletionRequestMessageRoleEnum.Assistant,
+         content: `[
+            { "title": "The Godfather", "id": 238 }, 
+            { "title": "The Departed", "id": 1422 }, 
+            { "title": "Goodfellas", "id": 769 }, 
+            { "title": "The Hangover", "id": 18785 },
+            { "title": "Bridesmaids", "id": 5479 }
+         ]`
+      },
+      {
+         role: ChatCompletionRequestMessageRoleEnum.User,
+         content: `Give me an array of objects with a top [[3]] of the best films in these genres: {{Action,Animation,Drama}}. The objects must be JSON with title and TMDB id.`
+      },
+      {
+         role: ChatCompletionRequestMessageRoleEnum.Assistant,
+         content: `[
+            { "title": "The Dark Knight", "id": 155 }, 
+            { "title": "Incredibles 2", "id": 260513 }, 
+            { "title": "The Shawshank Redemption", "id": 278 }
+         ]`
+      },
+      {
+         role: ChatCompletionRequestMessageRoleEnum.User,
+         content: `Give me an array of objects with a top [[2]] of the best films in these genres: {{Horror,Thriller}}. The objects must be JSON with title and TMDB id.`
+      },
+      {
+         role: ChatCompletionRequestMessageRoleEnum.Assistant,
+         content: `[ 
+            { "title": "The Silence of the Lambs", "id": 274 }, 
+            { "title": "Se7en", "id": 807 }
+         ]`
+      }
+   ]
 
    console.time('Tiempo de respuesta');
 
-   const response = await fetch(URL_GPT, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(payload)
-   }).then(res => res.json()) as GPTResponse;
+   const completions = await openai.createChatCompletion({
+      model: 'gpt-3.5-turbo',
+      messages: [
+         ...messages,
+         {
+            role: ChatCompletionRequestMessageRoleEnum.User,
+            content: `Give me an array of objects with a top [[${NUM_MOVIES}]] of the best films in these genres: {{${movies}}}. The objects must be JSON with title and TMDB id.`
+         }
+      ],
+   })
+   
+   console.timeEnd('Tiempo de respuesta')
 
-   console.timeEnd('Tiempo de respuesta');
+   const response = completions.data
 
+   if (response.choices.length === 0) {
+      return NextResponse.json({ response: { error: 'No response from GPT' } })
+   }
+   
    return NextResponse.json({ response })
 }
